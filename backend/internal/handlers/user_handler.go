@@ -12,7 +12,6 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 func RegisterUser(c *gin.Context) {
-    // 正確作法：在函式需要時才獲取 collection
 	var userCollection = database.GetCollection("Users") 
 
 	var user models.User
