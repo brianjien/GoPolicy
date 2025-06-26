@@ -3,10 +3,13 @@ package handlers
 import (
 	"context"
 	"gopolicy/backend/internal/database"
-	"net/http"
-	"time"
 	"gopolicy/backend/internal/models"
+	"net/http"
+	"os"
+	"time"
+
 	"github.com/gin-gonic/gin"
+	"github.com/golang-jwt/jwt/v5"
 	"go.mongodb.org/mongo-driver/bson"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -64,7 +67,19 @@ func LoginUser(c *gin.Context){
 	if err != nil{
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid email or password"})
 	}
+	// Generate JWT token
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+		"sub": user.ID,
+		"exp": time.Now().Add(time.Hour * 24).Unix(),
+	})
 
+	tokenString, err := token.SignedString([]byte(os.Getenv("JWT_SECRET")))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to generate token"})
+		return
+	}
 
+	// token passed to frontend
+	c.JSON(http.StatusOK, gin.H{"token": tokenString})
 
 }
