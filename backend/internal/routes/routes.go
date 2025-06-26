@@ -15,6 +15,9 @@ func SetupRouter() *gin.Engine {
 
         
         reactApi.POST("/register", handlers.RegisterUser)
+		
+		reactApi.POST("/login", handlers.LoginUser)
+	
 	}
 
 	return r

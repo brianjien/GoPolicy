@@ -13,3 +13,7 @@ type User struct{
 	CreatedAt time.Time          `json:"createdAt" bson:"createdAt"`
     BirthDate time.Time          `json:"birthDate" bson:"birthDate"`
 }
+type LoginInput struct {
+	Email    string `json:"email" binding:"required,email"`
+	Password string `json:"password" binding:"required"`
+}
