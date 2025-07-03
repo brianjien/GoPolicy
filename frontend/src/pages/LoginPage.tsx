@@ -31,39 +31,41 @@ const LoginPage: React.FC = () => {
   };
 
   return (
-    <div>
-      <h1>User Login</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="email">Email:</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
-        <div style={{ marginTop: '1rem' }}>
-          <label htmlFor="password">Password:</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
+   <div className="auth-page-container login-page">
+    <div className="auth-card">
+        <h1>User Login</h1>
+        <form onSubmit={handleSubmit}>
+          <div>
+            <label htmlFor="email">Email:</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+          <div style={{ marginTop: '1rem' }}>
+            <label htmlFor="password">Password:</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
 
-        {/* Display the error message if it exists */}
-        {error && <p style={{ color: 'red' }}>{error}</p>}
+          {/* Display the error message if it exists */}
+          {error && <p style={{ color: 'red' }}>{error}</p>}
 
-        <button type="submit" style={{ marginTop: '1rem' }}>
-          Login
-        </button>
-      </form>
+          <button type="submit" style={{ marginTop: '1rem' }}>
+            Login
+          </button>
+        </form>
+      </div>
     </div>
   );
 };
