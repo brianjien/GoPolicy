@@ -1,69 +1,112 @@
-# React + TypeScript + Vite
+# GoPolicy - Public Policy Online Voting Platform
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 1. Project Overview
 
-Currently, two official plugins are available:
+**GoPolicy** is a secure, identity-based online platform designed for public policy voting. It allows registered and authenticated users to vote on various public policy issues, ensuring the integrity of the process by limiting each user to a single vote per issue.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+This project is built with a modern technology stack, featuring a Go backend API and a React frontend, containerized with Docker for seamless deployment.
 
-## Expanding the ESLint configuration
+## 2. Technology Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+| Category | Technology |
+| :--- | :--- |
+| **Backend** | Go (Golang) with the Gin web framework |
+| **Frontend** | React with TypeScript (using Vite for tooling) |
+| **Database** | MongoDB (managed via MongoDB Atlas) |
+| **Containerization** | Docker |
+| **Deployment** | Render (Web Service for Backend, Static Site for Frontend) |
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## 3. Getting Started
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+Follow these instructions to set up and run the project on your local machine for development and testing purposes.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+### Prerequisites
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+* **Go**: Version 1.18 or higher.
+* **Node.js**: Version 18.x or higher.
+* **MongoDB Atlas Account**: A free MongoDB Atlas account is required to host the database.
+* **Git**: For cloning the repository.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### 3.1. Backend Setup (Go API)
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+1.  **Navigate to the Backend Directory:**
+    ```bash
+    cd backend
+    ```
+
+2.  **Create the Environment File:**
+    Create a file named `.env` in the `backend` directory. This file will store your sensitive credentials. It is already included in `.gitignore` to prevent it from being committed.
+
+3.  **Configure Environment Variables:**
+    Open the `.env` file and add the following lines. Replace the placeholders with your actual credentials from MongoDB Atlas.
+
+    ```env
+    # Get this from your MongoDB Atlas cluster -> Connect -> Drivers
+    MONGO_URI=mongodb+srv://<username>:<password>@<cluster-url>/?retryWrites=true&w=majority
+
+    # Create a long, random, and secret string for signing JWTs
+    JWT_SECRET=your_super_secret_and_random_jwt_key
+    ```
+
+4.  **Install Dependencies:**
+    Go will automatically download the necessary dependencies when you run the application for the first time, based on the `go.mod` file.
+
+5.  **Run the Backend Server:**
+    ```bash
+    go run cmd/api/main.go
+    ```
+    The backend server will start and listen on `http://localhost:8080`. You should see a log message confirming the connection to MongoDB.
+
+### 3.2. Frontend Setup (React App)
+
+1.  **Navigate to the Frontend Directory:**
+    Open a **new terminal window or tab** and navigate to the frontend directory:
+    ```bash
+    cd frontend
+    ```
+
+2.  **Install Dependencies:**
+    ```bash
+    npm install
+    ```
+
+3.  **Run the Frontend Development Server:**
+    ```bash
+    npm run dev
+    ```
+    The React development server (powered by Vite) will start and be accessible at `http://localhost:5173`. Your browser should open to this address automatically.
+
+    The `vite.config.ts` file is already configured to proxy any requests from `/api` to the backend server at `http://localhost:8080`, handling Cross-Origin (CORS) issues during development.
+
+## 4. Project Structure
+
+### Backend
+
+The backend follows the standard Go project layout for scalability and maintainability.
+
+/backend
+|-- /cmd/api/main.go    # Main application entrypoint
+|-- /internal/          # All private application logic
+|   |-- /database/      # MongoDB connection logic
+|   |-- /handlers/      # HTTP request handlers (business logic)
+|   |-- /models/        # Data structure definitions (structs)
+|   |-- /routes/        # API route definitions
+|-- .env                # Environment variables (local)
+|-- go.mod              # Go module dependencies
+`-- go.sum              # Dependency checksums
+
+
+### Frontend
+
+The frontend uses a feature-based folder structure to keep the code organized.
+
+/frontend
+|-- /src
+|   |-- /api/           # Functions for API communication (e.g., authService)
+|   |-- /components/    # Reusable UI components (e.g., Navbar)
+|   |-- /contexts/      # React Context for global state (e.g., AuthContext)
+|   |-- /hooks/         # Custom React hooks
+|   |-- /pages/         # Page-level components (e.g., LoginPage, HomePage)
+|   |-- /styles/        # Global CSS files
+|   |-- App.tsx         # Main app component with layout
+|   -- main.tsx        # Application entrypoint |-- vite.config.ts      # Vite configuration (including proxy) -- package.json        # Node.js dependencies and scripts
