@@ -81,7 +81,7 @@ Follow these instructions to set up and run the project on your local machine fo
 ## 4. Project Structure
 
 ### Backend
-
+```
 The backend follows the standard Go project layout for scalability and maintainability.
 
 /backend
@@ -94,12 +94,11 @@ The backend follows the standard Go project layout for scalability and maintaina
 |-- .env                # Environment variables (local)
 |-- go.mod              # Go module dependencies
 `-- go.sum              # Dependency checksums
-
-
+```
 ### Frontend
 
 The frontend uses a feature-based folder structure to keep the code organized.
-
+```
 /frontend
 |-- /src
 |   |-- /api/           # Functions for API communication (e.g., authService)
@@ -110,3 +109,4 @@ The frontend uses a feature-based folder structure to keep the code organized.
 |   |-- /styles/        # Global CSS files
 |   |-- App.tsx         # Main app component with layout
 |   -- main.tsx        # Application entrypoint |-- vite.config.ts      # Vite configuration (including proxy) -- package.json        # Node.js dependencies and scripts
+```
