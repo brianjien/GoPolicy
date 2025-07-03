@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { loginUser } from '../api/authService';
 import { useNavigate } from 'react-router-dom'; 
+import { useAuth } from '../contexts/AuthContext'; 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
    const navigate = useNavigate();
+   const { setToken } = useAuth();
    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setError(null);
@@ -13,7 +15,7 @@ const LoginPage: React.FC = () => {
     try {
       // Call the login API function
       const data = await loginUser({ email, password });
-      localStorage.setItem('token', data.token);
+      setToken(data.token);
       
       console.log('Login success:', data);
       alert('Login successful! Token: ' + data.token);
