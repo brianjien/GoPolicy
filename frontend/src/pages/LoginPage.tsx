@@ -1,10 +1,16 @@
-import React from 'react';
+import React, {useState} from 'react';
+import { loginUser } from '../api/authService';
 
 const LoginPage: React.FC = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState<string | null>(null);
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    alert('The form has been created'); 
+    alert(`Email: ${email}, Password: ${password}`);
+
   };
+ 
 
   return (
     <div>
@@ -17,6 +23,8 @@ const LoginPage: React.FC = () => {
             id="email"
             name="email"
             required
+            value={email} //Show email value
+            onChange={(e) => setEmail(e.target.value)} // Updated email value
           />
         </div>
         <div style={{ marginTop: '1rem' }}>
@@ -26,6 +34,8 @@ const LoginPage: React.FC = () => {
             id="password"
             name="password"
             required
+            value={password} // Show password value
+            onChange={(e) => setPassword(e.target.value)} //Update Password
           />
         </div>
         <button type="submit" style={{ marginTop: '1rem' }}>
